@@ -3,7 +3,10 @@
    <description name="PSTL Projects Update Site" url="http://coloane.lip6.fr/incubation-updates">
       GAL Incubation Updates Site
    </description>
-   <category-def name="Contribution" label="Default Contribution to ITS-tools">
+   <feature url="features/fr.lip6.pnml.tapaal.feature_1.0.0.qualifier.jar" id="fr.lip6.pnml.tapaal.feature" version="1.0.0.qualifier">
+      <category name="Tapaal in ITS-Tools"/>
+   </feature>
+   <category-def name="Tapaal in ITS-Tools" label="Tapaal integration with ITS-tools">
       <description>
          This category provides a new feature for ITS-Tools.
       </description>
