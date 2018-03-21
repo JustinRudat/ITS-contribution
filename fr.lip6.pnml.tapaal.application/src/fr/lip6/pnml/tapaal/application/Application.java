@@ -11,6 +11,7 @@ import fr.pnml.tapaal.runner.VerifyWithProcess;
 public class Application implements IApplication {
 	private static final String APPARGS = "application.args";
 	private static final String INPUT_FILE = "-i"; 
+	private static final String QUERY_FILE = "-q";
 	private static final String TAPAAL_PATH = "-tapaalpath";
 	private static final String ORDER_PATH = "-order";
 	private static final String EXAMINATION = "-examination";

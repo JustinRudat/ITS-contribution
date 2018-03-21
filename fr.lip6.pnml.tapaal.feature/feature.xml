@@ -300,6 +300,7 @@ This Agreement is governed by the laws of the State of New York and the intellec
    </license>
 
    <url>
+      <update url="https://justinrudat.github.io/ITS-contribution/"/>
       <discovery label="ITS-Tools update site" url="https://lip6.github.io/ITSTools/"/>
    </url>
 

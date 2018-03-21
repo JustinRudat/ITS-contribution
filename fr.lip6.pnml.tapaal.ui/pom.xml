@@ -14,4 +14,5 @@
     <name>A default ui plugin contributing to ITS-tools.</name>
     <description>Defines a button invoking a treatment over a Tapaal Specification.</description>
 
+    <groupId>fr.lip6.pnml.tapaal</groupId>
 </project>
