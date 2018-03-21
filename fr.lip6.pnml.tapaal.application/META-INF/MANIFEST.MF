@@ -6,6 +6,7 @@ Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.eclipse.core.runtime,
  fr.lip6.move.gal,
  org.antlr.runtime;bundle-version="[3.2.0,3.3.0]",
- fr.lip6.move.gal.application.pnmcc;bundle-version="1.0.0"
+ fr.lip6.move.gal.application.pnmcc;bundle-version="1.0.0",
+ fr.lip6.pnml.tapaal.runner
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: UPMC/CNRS, LIP6
