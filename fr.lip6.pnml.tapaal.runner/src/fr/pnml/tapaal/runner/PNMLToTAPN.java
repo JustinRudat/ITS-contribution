@@ -32,7 +32,7 @@ public class PNMLToTAPN {
     public List<String> orders;
 
 
-    public PNMLToTAPN(String path,String newpath, List<String> orders){
+    public PNMLToTAPN(String path,String newpath, List<String> orders) throws IOException {
         
         this.orders=orders;                                 // a list of orders calculated with a specific heuristic
         File file = new File(path);                         // linking from the pnml file path
@@ -49,10 +49,12 @@ public class PNMLToTAPN {
         PetriNet net = null;
         try {
                                                             // retrieving of the net from the pnml file
-            this.net = ptreader.loadFromXML(new BufferedInputStream(new FileInputStream(file.getPath())));
+            this.net = ptreader.loadFromXML(new BufferedInputStream(new FileInputStream(file)));
             
         } catch (NotAPTException | FileNotFoundException e) {
             e.printStackTrace();
+            System.err.println("could not parse PNML file :"+file.getCanonicalPath());
+            throw new IOException(e);
         }
         
     }
