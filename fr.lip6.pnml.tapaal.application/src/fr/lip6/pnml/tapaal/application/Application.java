@@ -25,20 +25,24 @@ public class Application implements IApplication {
 		String [] args = (String[]) context.getArguments().get(APPARGS);
 
 		String inputff = null;
+		String modelff = null;
 		String orderff = null;
 		String tapaalff = null;
+		String queryff = null;
 		String exam = null;
 		
 		for (int i=0; i < args.length ; i++) {
 			if (INPUT_FILE.equals(args[i])) {
 				inputff = args[++i];
 			} else if (TAPAAL_PATH.equals(args[i])) {
-				tapaalff = args[++i]; 
+				tapaalff = args[++i];
 			} else if (ORDER_PATH.equals(args[i])) {
-				orderff = args[++i]; 
+				orderff = args[++i];
 			} else if (EXAMINATION.equals(args[i])) {
-				exam = args[++i]; 
-			} else {
+				exam = args[++i];
+			} else if (QUERY_FILE.equals(args[i])) {
+                queryff = args[++i];
+            } else {
 				System.err.println("Unrecognized argument :" + args[i]);
 			}
 		}
@@ -47,8 +51,19 @@ public class Application implements IApplication {
 			System.err.println("Please provide input file with -i option");
 			return null;
 		}
+		if( exam != null ) {
+		    switch(exam) {
+		        case "ReachabilityDeadlock" : 
+		            File f = new File(inputff);
+		            modelff = f.getAbsolutePath().replace("-RD.out" ,"/model.pnml");
+		            modelff = modelff.replace("oracle","INPUTS");
+		            break;
+		        default : 
+		            break;
+		    }
+		}
 		
-		File ff = new File(inputff);
+		File ff = new File(modelff);
 		if (! ff.exists()) {
 			System.err.println("Input file "+inputff +" does not exist");
 			return null;
@@ -69,31 +84,49 @@ public class Application implements IApplication {
 			}
 		}
 		
-		File queryFile = Files.createTempFile("query", "q").toFile();
-		PrintWriter pw = new PrintWriter(queryFile);
+//		File queryFile = Files.createTempFile("query", "q").toFile();
+//		PrintWriter pw = new PrintWriter(queryFile);
 		
-		if ("ReachabilityDeadlock".equals(exam)) {
-			pw.println("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" + 
-			        "<property-set xmlns=\"http://tapaal.net/\">\n" + 
-			        "<property>\n" + 
-			        "    <id>DeadlockTesting</id>\n" + 
-			        "    <description>testing the existance of a deadlock in the model</description>\n" + 
-			        "    <formula>\n" + 
-			        "      <exists-path>\n" + 
-			        "        <finally>\n" + 
-			        "          <deadlock/>\n" + 
-			        "        </finally>\n" + 
-			        "      </exists-path>\n" + 
-			        "    </formula>\n" + 
-			        "  </property>\n" + 
-			        "</property-set>");
-			pw.flush();
-			pw.close();
-		}
+		// adapter query file en fonction de exam demander, meme dossier que le model mais different fichier
 		
+		queryff = modelff.replace("model.pnml", "");
 		
+		queryff += exam +".xml";
+		
+//		switch(exam) {
+//		    case "ReachabilityDeadlock" :
+//		        queryff += "ReachabilityDeadlock.xml";
+//		        break;
+//		    default :
+//		        System.err.println("Unrecognized examination : \""+exam+"\"");
+//		        break;
+//		}
+		
+//		if ("ReachabilityDeadlock".equals(exam)) {
+//			pw.println("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" + 
+//			        "<property-set xmlns=\"http://tapaal.net/\">\n" + 
+//			        "<property>\n" + 
+//			        "    <id>DeadlockTesting</id>\n" + 
+//			        "    <description>testing the existance of a deadlock in the model</description>\n" + 
+//			        "    <formula>\n" + 
+//			        "      <exists-path>\n" + 
+//			        "        <finally>\n" + 
+//			        "          <deadlock/>\n" + 
+//			        "        </finally>\n" + 
+//			        "      </exists-path>\n" + 
+//			        "    </formula>\n" + 
+//			        "  </property>\n" + 
+//			        "</property-set>");
+//			pw.flush();
+//			pw.close();
+//		}
+		
+		System.out.println(tapaalff+" "+queryff);
 		VerifyWithProcess vwp = new VerifyWithProcess(null);
-		vwp.doVerify(inputff, tapaalff, queryFile.getCanonicalPath());
+		
+		//vwp.doVerify(inputff, tapaalff, queryFile.getCanonicalPath());
+		
+		vwp.doVerify(inputff, tapaalff, queryff);
 		time = System.currentTimeMillis();
 		
 		
