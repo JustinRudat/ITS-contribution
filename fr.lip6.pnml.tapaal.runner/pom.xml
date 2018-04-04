@@ -11,7 +11,7 @@
   
     <artifactId>fr.lip6.pnml.tapaal.runner</artifactId>
     <packaging>eclipse-plugin</packaging>
-    <name>A default plugin contributing to ITS-tools.</name>
-    <description>Defines a treatment over a GAL Specification.</description>
+    <name>A default Tapaal plugin contributing to ITS-tools.</name>
+    <description>Defines a treatment over a PNML Specification.</description>
 
 </project>
