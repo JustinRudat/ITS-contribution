@@ -2,6 +2,7 @@ package fr.pnml.tapaal.runner;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
@@ -62,9 +63,6 @@ public class VerifyWithProcess {
             String commandLine = verifypath+" "+arguments;
             String[] commands = commandLine.split(" ");
 
-            // creating the process runner for verifypn64
-            Runner runner = new Runner();
-
             // creating command line for the runner
             CommandLine cl = new CommandLine();
             for(String str : commands) {
@@ -78,7 +76,9 @@ public class VerifyWithProcess {
             
             System.out.println("Launching runner ...");
             
-            runner.runTool(timeout, cl, tempo_file, errToOut);
+            Runner.runTool(timeout, cl, tempo_file, true);
+            
+            Files.lines(tempo_file.toPath()).forEach(line -> System.out.println(line));
             
             // displaying the memory consumption of the runtime environment
             System.gc();
