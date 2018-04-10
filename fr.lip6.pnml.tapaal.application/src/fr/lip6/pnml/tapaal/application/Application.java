@@ -83,53 +83,12 @@ public class Application implements IApplication {
 				System.err.println("Could not set up work folder in "+cwd);
 			}
 		}
-		
-//		File queryFile = Files.createTempFile("query", "q").toFile();
-//		PrintWriter pw = new PrintWriter(queryFile);
-		
-		// adapter query file en fonction de exam demander, meme dossier que le model mais different fichier
-		
 		queryff = modelff.replace("model.pnml", "");
-		
 		queryff += exam +".xml";
-		
-//		switch(exam) {
-//		    case "ReachabilityDeadlock" :
-//		        queryff += "ReachabilityDeadlock.xml";
-//		        break;
-//		    default :
-//		        System.err.println("Unrecognized examination : \""+exam+"\"");
-//		        break;
-//		}
-		
-//		if ("ReachabilityDeadlock".equals(exam)) {
-//			pw.println("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" + 
-//			        "<property-set xmlns=\"http://tapaal.net/\">\n" + 
-//			        "<property>\n" + 
-//			        "    <id>DeadlockTesting</id>\n" + 
-//			        "    <description>testing the existance of a deadlock in the model</description>\n" + 
-//			        "    <formula>\n" + 
-//			        "      <exists-path>\n" + 
-//			        "        <finally>\n" + 
-//			        "          <deadlock/>\n" + 
-//			        "        </finally>\n" + 
-//			        "      </exists-path>\n" + 
-//			        "    </formula>\n" + 
-//			        "  </property>\n" + 
-//			        "</property-set>");
-//			pw.flush();
-//			pw.close();
-//		}
-		
-		System.out.println(tapaalff+" "+queryff);
 		VerifyWithProcess vwp = new VerifyWithProcess(null);
-		
 		//vwp.doVerify(inputff, tapaalff, queryFile.getCanonicalPath());
-		
 		vwp.doVerify(inputff, tapaalff, queryff);
 		time = System.currentTimeMillis();
-		
-		
 		return IApplication.EXIT_OK;
 	}
 
