@@ -21,6 +21,7 @@ public class VerifyWithProcess {
         this.orders = orders;
     }
 
+    //TODO maybe useless, need double check
     public void verify(){
 
         // User link the file 
@@ -54,9 +55,6 @@ public class VerifyWithProcess {
 
             // defining query file path and options            
             String options = "-k 0 -s BestFS -r 1 -q 0 -ctl czero -x 1";
-
-            //TODO find and define the path to the verifypn64 engine
-            // defining engine path and arguments
 
             String arguments = options+" "+file_model+" "+file_query;
 
@@ -97,6 +95,8 @@ public class VerifyWithProcess {
         }
     }
     
+    
+    //TODO if verify deleted then delete this
     private String chercherVerifyPN(File f) {
 //        File f = new File("/");
         String test = "";
