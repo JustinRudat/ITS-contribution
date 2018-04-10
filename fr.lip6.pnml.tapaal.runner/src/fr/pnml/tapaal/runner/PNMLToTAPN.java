@@ -88,7 +88,7 @@ public class PNMLToTAPN {
         }
         pw.println("</net>");                                                                   // writing the eng of the file
         pw.println("</pnml>");  
-        pw.flush();                                                                             // Always remember to flush...
+        pw.flush();                                                                             
     }
     
     
@@ -165,7 +165,7 @@ public class PNMLToTAPN {
 		return Math.toIntExact(ptMarking.getText());
 	}
 	
-	
+	// Maybe not usefull anymore since we are using the MCC queries
 	public void writeQuery(File query_file) {
 	    try {
 	        
@@ -187,7 +187,4 @@ public class PNMLToTAPN {
         }
 	}
 	
-	public void queryFormulaPrinter(PrintWriter pw_tmp) {
-	    
-	}
 }
