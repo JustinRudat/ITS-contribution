@@ -51,17 +51,17 @@ public class Application implements IApplication {
 			System.err.println("Please provide input file with -i option");
 			return null;
 		}
-		if( exam != null ) {
-		    switch(exam) {
-		        case "ReachabilityDeadlock" : 
-		            File f = new File(inputff);
-		            modelff = f.getAbsolutePath().replace("-RD.out" ,"/model.pnml");
-		            modelff = modelff.replace("oracle","INPUTS");
-		            break;
-		        default : 
-		            break;
-		    }
-		}
+//		if( exam != null ) {
+//		    switch(exam) {
+//		        case "ReachabilityDeadlock" : 
+//		            File f = new File(inputff);
+//		            modelff = f.getAbsolutePath().replace("-RD.out" ,"/model.pnml");
+//		            modelff = modelff.replace("oracle","INPUTS");
+//		            break;
+//		        default : 
+//		            break;
+//		    }
+//		}
 		
 		File ff = new File(modelff);
 		if (! ff.exists()) {
