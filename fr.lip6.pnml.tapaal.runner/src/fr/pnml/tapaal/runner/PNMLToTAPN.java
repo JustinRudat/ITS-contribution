@@ -164,9 +164,7 @@ public class PNMLToTAPN {
 		}
 		return Math.toIntExact(ptMarking.getText());
 	}
-	
-<<<<<<< HEAD
-	// Maybe not usefull anymore since we are using the MCC queries
+		// Maybe not usefull anymore since we are using the MCC queries
 //	public void writeQuery(File query_file) {
 //	    try {
 //	        
@@ -187,8 +185,6 @@ public class PNMLToTAPN {
 //            e.printStackTrace();
 //        }
 //	}
-=======
 
->>>>>>> branch 'master' of https://github.com/JustinRudat/ITS-contribution.git
 	
 }
