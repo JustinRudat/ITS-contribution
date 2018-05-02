@@ -2,16 +2,7 @@ package fr.lip6.pnml.tapaal.application;
 
 import java.util.List;
 
-import android.util.SparseIntArray;
-import fr.lip6.move.gal.BooleanExpression;
-import fr.lip6.move.gal.ComparisonOperators;
-import fr.lip6.move.gal.GALTypeDeclaration;
-import fr.lip6.move.gal.GF2;
-import fr.lip6.move.gal.GalFactory;
-import fr.lip6.move.gal.Specification;
-import fr.lip6.move.gal.Statement;
-import fr.lip6.move.gal.Transition;
-import fr.lip6.move.gal.Variable;
+
 import fr.lip6.move.gal.util.MatrixCol;
 import fr.lip6.move.pnml.ptnet.PetriNet;
 
