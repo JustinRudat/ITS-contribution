@@ -66,8 +66,7 @@ public class VerifyWithProcess {
             for(String str : commands) {
                 cl.addArg(str);
             }
-            File tempo_file = new File("/tmp");
-            tempo_file.createTempFile("temporary",".result");
+            File tempo_file =  File.createTempFile("temporary",".result");           
 
             long timeout = 300000;
             
