@@ -11,9 +11,9 @@ import fr.lip6.move.gal.pnml.togal.PnmlToGalTransformer;
 import fr.lip6.move.gal.semantics.IDeterministicNextBuilder;
 import fr.lip6.move.gal.semantics.INextBuilder;
 import fr.lip6.move.gal.structural.NoDeadlockExists;
-import fr.lip6.move.gal.structural.SpecBuilder;
 import fr.lip6.move.gal.structural.StructuralReduction;
 import fr.pnml.tapaal.runner.VerifyWithProcess;
+import fr.lip6.move.pnml.ptnet.PetriNet;
 
 public class ApplicationWithRed implements IApplication {
 	private static final String APPARGS = "application.args";
@@ -104,7 +104,7 @@ public class ApplicationWithRed implements IApplication {
 					return null;
 				}
 				Specification reduced = sr.rebuildSpecification();
-				PetriNet pn =  TapaalBuilder.buildSpec(sr.getFlowPT(), sr.getFlowTP(), sr.getPnames(), sr.getTnames(),sr.getMarks());
+				PetriNet pn =  TapaalBuilder.buildTapaal(sr.getFlowPT(), sr.getFlowTP(), sr.getPnames(), sr.getTnames(),sr.getMarks());
 				//reduced.getProperties().addAll(reader.getSpec().getProperties());
 			} catch (NoDeadlockExists e) {
 				String formulaname = "ModelName-PT-ReachabilityDeadlock-0"; // was : reader.getSpec().getProperties().get(0).getName()
