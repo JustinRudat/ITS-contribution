@@ -3,11 +3,11 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Command-line ITS-Tools Application
 Bundle-SymbolicName: fr.lip6.pnml.tapaal.application;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Require-Bundle: fr.lip6.move.gal.application.pnmcc;bundle-version="1.0.0",
+Require-Bundle: fr.lip6.move.gal.pnml.togal,
  org.eclipse.core.runtime,
  fr.lip6.move.gal,
- org.antlr.runtime;bundle-version="[3.2.0,3.3.0]",
  fr.lip6.move.gal.structural,
+ fr.lip6.pnml.framework.ptnet,
  fr.lip6.pnml.tapaal.runner
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: UPMC/CNRS, LIP6
