@@ -1,8 +1,6 @@
 package fr.lip6.pnml.tapaal.application;
 
 import java.io.File;
-import java.io.PrintWriter;
-import java.nio.file.Files;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 
@@ -25,7 +23,6 @@ public class Application implements IApplication {
 		String [] args = (String[]) context.getArguments().get(APPARGS);
 
 		String inputff = null;
-		String modelff = null;
 		String orderff = null;
 		String tapaalff = null;
 		String queryff = null;
@@ -63,7 +60,7 @@ public class Application implements IApplication {
 //		    }
 //		}
 		
-		File ff = new File(modelff);
+		File ff = new File(inputff);
 		if (! ff.exists()) {
 			System.err.println("Input file "+inputff +" does not exist");
 			return null;
@@ -83,7 +80,7 @@ public class Application implements IApplication {
 				System.err.println("Could not set up work folder in "+cwd);
 			}
 		}
-		queryff = modelff.replace("model.pnml", "");
+		queryff = inputff.replace("model.pnml", "");
 		queryff += exam +".xml";
 		VerifyWithProcess vwp = new VerifyWithProcess(null);
 		//vwp.doVerify(inputff, tapaalff, queryFile.getCanonicalPath());
