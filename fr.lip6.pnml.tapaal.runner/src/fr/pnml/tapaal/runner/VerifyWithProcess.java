@@ -1,7 +1,9 @@
 package fr.pnml.tapaal.runner;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
@@ -129,7 +131,7 @@ public class VerifyWithProcess {
             long timeout = 300000;
             
             boolean errToOut = false;
-            
+            double timestamp = System.currentTimeMillis();
             System.out.println("Launching runner ...");
             
             Runner.runTool(timeout, cl, tempo_file, true);
@@ -170,5 +172,18 @@ public class VerifyWithProcess {
             }
         }
         return test;
+    }
+    
+    private void printACSV(long memory,double time,String name){
+    	String filename = "result.csv";
+    	File file = new File(filename);
+    	try {
+			PrintWriter pw = new PrintWriter(file);
+			pw.write(name+";"+memory+";"+time);
+			pw.flush();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+    	
     }
 }
