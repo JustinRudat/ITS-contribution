@@ -130,7 +130,14 @@ public class ApplicationWithRed implements IApplication {
 				totapn = new PNMLToTAPN(pn, file_tmp.getPath(), null);
 				//reduced.getProperties().addAll(reader.getSpec().getProperties());
 			} catch (NoDeadlockExists e) {
-				String formulaname = "ModelName-PT-ReachabilityDeadlock-0"; // was : reader.getSpec().getProperties().get(0).getName()
+				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+				DocumentBuilder doc = factory.newDocumentBuilder();
+				File examff = new File(examName);
+				Document xml = doc.parse(examff);
+				NodeList id_list = xml.getElementsByTagName("id");
+				Node elm = id_list.item(0);
+				
+				String formulaname = elm.getTextContent();// was : reader.getSpec().getProperties().get(0).getName()
 				System.out.println( "FORMULA " + formulaname  + " FALSE TECHNIQUES TOPOLOGICAL STRUCTURAL_REDUCTION");
 				return null;
 			}
