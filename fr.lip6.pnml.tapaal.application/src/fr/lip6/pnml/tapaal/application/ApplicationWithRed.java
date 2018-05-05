@@ -86,7 +86,7 @@ public class ApplicationWithRed implements IApplication {
 		
 		String modelName = ff.getName().replace(".pnml", "");
 
-		
+		PetriNet pn=null;
 		String examName = ff.getName().replace("model.pnml", exam+".xml");
 		PNMLToTAPN totapn=null;
 		// load PNML to Specification
@@ -122,7 +122,9 @@ public class ApplicationWithRed implements IApplication {
 					return null;
 				}
 				Specification reduced = sr.rebuildSpecification();
-				PetriNet pn =  TapaalBuilder.buildTapaal(sr.getFlowPT(), sr.getFlowTP(), sr.getPnames(), sr.getTnames(),sr.getMarks());
+				pn =  TapaalBuilder.buildTapaal(sr.getFlowPT(), sr.getFlowTP(), sr.getPnames(), sr.getTnames(),sr.getMarks());
+				
+				//May not need this part nor the totapn variable
 				File file_tmp = File.createTempFile(ff.getName(), ".xml");
 	            String file_model = file_tmp.getAbsolutePath();
 				totapn = new PNMLToTAPN(pn, file_tmp.getPath(), null);
@@ -164,7 +166,11 @@ public class ApplicationWithRed implements IApplication {
 		queryff += exam +".xml";
 		VerifyWithProcess vwp = new VerifyWithProcess(null);
 		//vwp.doVerify(inputff, tapaalff, queryFile.getCanonicalPath());
-		vwp.doVerify(inputff, tapaalff, queryff);
+		if(pn!=null){
+		vwp.doVerify(pn, tapaalff, queryff);
+		}else{
+			System.err.println("Parameter PetriNet is currently null\n");
+		}
 		time = System.currentTimeMillis();
 		
 		
