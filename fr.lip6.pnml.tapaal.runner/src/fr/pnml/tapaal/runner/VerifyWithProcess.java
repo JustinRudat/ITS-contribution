@@ -121,7 +121,13 @@ public class VerifyWithProcess {
             double timestamp = System.currentTimeMillis();
             System.out.println("Launching runner ...");
             
-            Runner.runTool(timeout, cl, tempo_file, true);
+            if(Runner.runTool(timeout, cl, tempo_file, true)!=0){
+            	System.err.println("Error while running the tool\n");
+            	if(null!=file_tmp) { // If the program run without error, delete the temporary file before exiting
+                    file_tmp.delete();
+                }
+            	return;
+            }
             
             Files.lines(tempo_file.toPath()).forEach(line -> System.out.println(line));
             
@@ -133,6 +139,7 @@ public class VerifyWithProcess {
             System.out.println(str_tmp);            
 
             printACSV(usedMB,System.currentTimeMillis()- timestamp, net.getName().getText());
+            
         } catch (IOException | TimeoutException | InterruptedException e) {
             e.printStackTrace();
         }finally {
