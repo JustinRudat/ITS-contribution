@@ -24,20 +24,7 @@ public class VerifyWithProcess {
         this.orders = orders;
     }
 
-    //TODO maybe useless, need double check
-    public void verify(){
-
-        // User link the file 
-        JFileChooser dialogue = new JFileChooser();
-        dialogue.showOpenDialog(null);
-        String file_origin=dialogue.getSelectedFile().getAbsolutePath();
-        String test_verifypath  = chercherVerifyPN(new File("/home"));
-        System.out.println(test_verifypath);
-        String verifypath  = "/home/justin/tapaal-3.4.0-linux64/bin/verifypn64";
-        String file_query = "/home/justin/Documents/verify_query_deadlock.xml";
-
-        doVerify(file_origin, verifypath, file_query);
-    }
+    
 
     public void doVerify(String file_origin, String verifypath, String file_query) {
         // Creating the file names we need 
@@ -145,7 +132,7 @@ public class VerifyWithProcess {
             String str_tmp ="Memory usage : "+usedMB+"Mb";
             System.out.println(str_tmp);            
 
-
+            printACSV(usedMB,System.currentTimeMillis()- timestamp, net.getName().getText());
         } catch (IOException | TimeoutException | InterruptedException e) {
             e.printStackTrace();
         }finally {
@@ -156,27 +143,20 @@ public class VerifyWithProcess {
     }
     
     
-    //TODO if verify deleted then delete this
-    private String chercherVerifyPN(File f) {
-//        File f = new File("/");
-        String test = "";
-        String recherche = "verifypn64";
-        if(f.getName().equals(recherche)) {
-            return f.getAbsolutePath();
-        }else {
-            File[] liste_f  = f.listFiles();
-            if(null!=liste_f) {
-                for(File t :liste_f) {
-                    test = chercherVerifyPN(t);
-                }
-            }
-        }
-        return test;
-    }
     
+    
+    //creer et ecrit un fichier result.csv
     private void printACSV(long memory,double time,String name){
     	String filename = "result.csv";
+    	
     	File file = new File(filename);
+    	if(!file.exists()){
+    		try {
+				file.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+    	}
     	try {
 			PrintWriter pw = new PrintWriter(file);
 			pw.write(name+";"+memory+";"+time);
