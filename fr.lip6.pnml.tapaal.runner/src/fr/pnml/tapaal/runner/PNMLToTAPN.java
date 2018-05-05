@@ -58,6 +58,22 @@ public class PNMLToTAPN {
         }
         
     }
+    
+    public PNMLToTAPN(PetriNet net,String newpath, List<String> orders) throws IOException {
+        
+        this.orders=orders;                                 // a list of orders calculated with a specific heuristic
+        File file_tmp = new File(newpath);                  // linking the temporary file for the verifypn64 engine
+        this.input_arcs = new ArrayList<>();                // initializing differents arraylist
+        this.output_arcs = new ArrayList<>();               //
+        try {
+
+            this.pw = new PrintWriter(file_tmp);            // creating a prinwriter to write on the temporary file
+        } catch (IOException e) {
+            System.err.println("I/O Error while initializing a PNMLToTAPN instance.");
+        }
+        this.net = net;
+        
+    }
 
     // Converting a pnml file into a temporary xml file structured as a pnml for the TAPAAL engine
     public void toTAPN(){
