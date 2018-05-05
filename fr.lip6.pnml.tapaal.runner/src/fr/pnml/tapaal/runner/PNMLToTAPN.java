@@ -180,27 +180,7 @@ public class PNMLToTAPN {
 		}
 		return Math.toIntExact(ptMarking.getText());
 	}
-		// Maybe not usefull anymore since we are using the MCC queries
-//	public void writeQuery(File query_file) {
-//	    try {
-//	        
-//            PrintWriter pw_tmp = new PrintWriter(query_file);
-//            pw_tmp.println("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" + 
-//                    "<property-set xmlns=\"http://tapaal.net/\">");
-//            pw_tmp.println("<property>");
-//            pw_tmp.println("    <id></id>");
-//            pw_tmp.println("    <description></description>");
-//            pw_tmp.println("    <formula>");
-//            queryFormulaPrinter(pw_tmp);
-//            pw_tmp.println("    </formula>");
-//            pw_tmp.println("</property>");
-//            pw_tmp.print("</property-set>");
-//            
-//        } catch (FileNotFoundException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
-//	}
+
 
 	
 }
