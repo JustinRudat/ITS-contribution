@@ -22,13 +22,12 @@ public class TapaalBuilder {
 	public static PetriNet buildTapaal(MatrixCol flowPT, MatrixCol flowTP, List<String> pnames, List<String> tnames,
 			List<Integer> marks) {
 	    PetriNet retour = null;
-	    File xml_ptnet=null;
 	    try {
 	        List<SparseIntArray> col_pt = flowPT.getColumns();
 	        List<SparseIntArray> col_tp = flowTP.getColumns();
 	    
 	    
-            xml_ptnet = File.createTempFile("tempo_net", ".pnml");
+            File xml_ptnet = File.createTempFile("tempo_net", ".pnml");
             ArrayList<Place> places = new ArrayList<Place>();
             PrintWriter pw = new PrintWriter(xml_ptnet);
             pw.print("<pnml>\n" + 
@@ -69,10 +68,6 @@ public class TapaalBuilder {
             
         } catch (IOException e) {
             e.printStackTrace();
-        }   finally {
-            if(null!=xml_ptnet) { // If the program run without error, delete the temporary file before exiting
-                xml_ptnet.delete();
-            }
         }
 	    
 		return retour;
