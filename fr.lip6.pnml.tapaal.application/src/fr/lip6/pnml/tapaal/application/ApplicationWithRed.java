@@ -65,17 +65,6 @@ public class ApplicationWithRed implements IApplication {
 			System.err.println("Please provide input file with -i option");
 			return null;
 		}
-//		if( exam != null ) {
-//		    switch(exam) {
-//		        case "ReachabilityDeadlock" : 
-//		            File f = new File(inputff);
-//		            modelff = f.getAbsolutePath().replace("-RD.out" ,"/model.pnml");
-//		            modelff = modelff.replace("oracle","INPUTS");
-//		            break;
-//		        default : 
-//		            break;
-//		    }
-//		}
 
 		File ff = new File(inputff);
 		if (! ff.exists()) {
@@ -108,7 +97,6 @@ public class ApplicationWithRed implements IApplication {
 			try {
 				sr.reduce();
 				if (sr.getTnames().isEmpty()) {
-					// TODO lire dans le fichier ReachabilityDeadlock.xml
 					DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 					DocumentBuilder doc = factory.newDocumentBuilder();
 					File examff = new File(examName);
@@ -122,13 +110,10 @@ public class ApplicationWithRed implements IApplication {
 					return null;
 				}
 				Specification reduced = sr.rebuildSpecification();
+				// export to PetriNet for Tapaal
 				pn =  TapaalBuilder.buildTapaal(sr.getFlowPT(), sr.getFlowTP(), sr.getPnames(), sr.getTnames(),sr.getMarks());
 				
-				//May not need this part nor the totapn variable
-				File file_tmp = File.createTempFile(ff.getName(), ".xml");
-	            String file_model = file_tmp.getAbsolutePath();
-				totapn = new PNMLToTAPN(pn, file_tmp.getPath(), null);
-				//reduced.getProperties().addAll(reader.getSpec().getProperties());
+				
 			} catch (NoDeadlockExists e) {
 				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 				DocumentBuilder doc = factory.newDocumentBuilder();
@@ -147,17 +132,6 @@ public class ApplicationWithRed implements IApplication {
 			throw new IOException("Cannot open file "+ff.getAbsolutePath());
 		}
 		
-		
-		
-		// export to Tapaal
-		// need to verify if the export and invoke steps are not in doVerify()
-		//totapn.toTAPN();
-		
-		// invoke Tapaal
-		
-		
-		
-		
 		long time = System.currentTimeMillis();
 		
 		System.out.println("Successfully read input file : " + inputff +" in " + (time - System.currentTimeMillis()) + " ms.");
@@ -171,10 +145,10 @@ public class ApplicationWithRed implements IApplication {
 		}
 		queryff = inputff.replace("model.pnml", "");
 		queryff += exam +".xml";
+		// invoke Tapaal
 		VerifyWithProcess vwp = new VerifyWithProcess(null);
-		//vwp.doVerify(inputff, tapaalff, queryFile.getCanonicalPath());
 		if(pn!=null){
-		vwp.doVerify(pn, tapaalff, queryff);
+		    vwp.doVerify(pn, tapaalff, queryff); //appel à toTapn() in the doVerify method
 		}else{
 			System.err.println("Parameter PetriNet is currently null\n");
 		}
