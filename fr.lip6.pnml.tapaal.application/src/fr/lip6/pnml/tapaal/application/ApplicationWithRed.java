@@ -45,6 +45,7 @@ public class ApplicationWithRed implements IApplication {
 		String queryff = null;
 		String exam = null;
 		
+		// retrieving the arguments
 		for (int i=0; i < args.length ; i++) {
 			if (INPUT_FILE.equals(args[i])) {
 				inputff = args[++i];
@@ -83,8 +84,8 @@ public class ApplicationWithRed implements IApplication {
 			System.out.println("Parsing pnml file : " + ff.getAbsolutePath());
 
 			PnmlToGalTransformer trans = new PnmlToGalTransformer();
-			Specification spec = trans.transform(ff.toURI());			
-			// SerializationUtil.systemToFile(spec, ff.getPath() + ".gal");
+			Specification spec = trans.transform(ff.toURI());	
+			
 			if (spec.getMain() == null) {
 				spec.setMain(spec.getTypes().get(spec.getTypes().size()-1));
 			}
@@ -143,8 +144,10 @@ public class ApplicationWithRed implements IApplication {
 				System.err.println("Could not set up work folder in "+cwd);
 			}
 		}
+		
 		queryff = inputff.replace("model.pnml", "");
 		queryff += exam +".xml";
+		
 		// invoke Tapaal
 		VerifyWithProcess vwp = new VerifyWithProcess(null);
 		if(pn!=null){
@@ -154,8 +157,6 @@ public class ApplicationWithRed implements IApplication {
 		}
 		time = System.currentTimeMillis();
 		
-		
-		// interpret result
 		return IApplication.EXIT_OK;
 	}
 
