@@ -30,7 +30,6 @@ public class ApplicationWithRed implements IApplication {
 	private static final String TAPAAL_PATH = "-tapaalpath";
 	private static final String ORDER_PATH = "-order";
 	private static final String EXAMINATION = "-examination";
-	private static final String REDUCTION= "-red";
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.equinox.app.IApplication#start(org.eclipse.equinox.app.IApplicationContext)
@@ -46,7 +45,6 @@ public class ApplicationWithRed implements IApplication {
 		String queryff = null;
 		String exam = null;
 		
-		boolean doRed = false;
 		// retrieving the arguments
 		for (int i=0; i < args.length ; i++) {
 			if (INPUT_FILE.equals(args[i])) {
@@ -59,9 +57,7 @@ public class ApplicationWithRed implements IApplication {
 				exam = args[++i];
 			} else if (QUERY_FILE.equals(args[i])) {
                 queryff = args[++i];
-            } else if(REDUCTION.equals(args[i])){
-                doRed = true;
-            }else {
+            } else {
 				System.err.println("Unrecognized argument :" + args[i]);
 			}
 		}
@@ -100,23 +96,21 @@ public class ApplicationWithRed implements IApplication {
 			StructuralReduction sr = new StructuralReduction(idnb);
 			
 			try {
-			    if(doRed) { // do the reduction
-			        sr.reduce();
-    				if (sr.getTnames().isEmpty()) {
-    					DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    					DocumentBuilder doc = factory.newDocumentBuilder();
-    					File examff = new File(examName);
-    					Document xml = doc.parse(examff);
-    					NodeList id_list = xml.getElementsByTagName("id");
-    					Node elm = id_list.item(0);
-    					
-    					String formulaname = elm.getTextContent();
-    					
-    					System.out.println( "FORMULA " + formulaname  + " TRUE TECHNIQUES TOPOLOGICAL STRUCTURAL_REDUCTION");
-    					return null;
-    				}
-    				Specification reduced = sr.rebuildSpecification();
-			    }
+				sr.reduce();
+				if (sr.getTnames().isEmpty()) {
+					DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+					DocumentBuilder doc = factory.newDocumentBuilder();
+					File examff = new File(examName);
+					Document xml = doc.parse(examff);
+					NodeList id_list = xml.getElementsByTagName("id");
+					Node elm = id_list.item(0);
+					
+					String formulaname = elm.getTextContent();
+					
+					System.out.println( "FORMULA " + formulaname  + " TRUE TECHNIQUES TOPOLOGICAL STRUCTURAL_REDUCTION");
+					return null;
+				}
+				Specification reduced = sr.rebuildSpecification();
 				// export to PetriNet for Tapaal
 				pn =  TapaalBuilder.buildTapaal(sr.getFlowPT(), sr.getFlowTP(), sr.getPnames(), sr.getTnames(),sr.getMarks());
 				
