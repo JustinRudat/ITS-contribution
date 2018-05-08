@@ -61,7 +61,7 @@ public class VerifyWithProcess {
             long timeout = 300000;
             
             boolean errToOut = false;
-            
+            double timestamp = System.currentTimeMillis();
             System.out.println("Launching runner ...");
             
             Runner.runTool(timeout, cl, tempo_file, true);
@@ -74,8 +74,8 @@ public class VerifyWithProcess {
             long usedMB = (rt.totalMemory() - rt.freeMemory()) / 1024 / 1024;
             String str_tmp ="Memory usage : "+usedMB+"Mb";
             System.out.println(str_tmp);            
-
-
+            File tmp_file = new File(file_origin);
+            printACSV(usedMB,System.currentTimeMillis()- timestamp, tmp_file.getParent());
         } catch (IOException | TimeoutException | InterruptedException e) {
             e.printStackTrace();
         }finally {
@@ -166,7 +166,7 @@ public class VerifyWithProcess {
     	}
     	try {
 			PrintWriter pw = new PrintWriter(file);
-			pw.write(name+";"+memory+";"+time);
+			pw.print(name+";"+memory+";"+time+"\n");
 			pw.flush();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
