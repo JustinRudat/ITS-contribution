@@ -1,61 +1,76 @@
 package fr.lip6.pnml.tapaal.application;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 
-
+import android.util.SparseIntArray;
+import fr.lip6.move.gal.nupn.PTNetReader;
 import fr.lip6.move.gal.util.MatrixCol;
 import fr.lip6.move.pnml.ptnet.PetriNet;
+import fr.lip6.move.pnml.ptnet.Place;
+import fr.lip6.move.pnml.ptnet.impl.PetriNetImpl;
 
 public class TapaalBuilder {
 
 	public static PetriNet buildTapaal(MatrixCol flowPT, MatrixCol flowTP, List<String> pnames, List<String> tnames,
 			List<Integer> marks) {
-//		GalFactory gf = GalFactory.eINSTANCE;
-//		Specification spec = gf.createSpecification();
-//		
-//		GALTypeDeclaration gal = gf.createGALTypeDeclaration();
-//		gal.setName("petri");
-//		
-//		int vi = 0;
-//		for (String var : pnames) {
-//			Variable v = gf.createVariable();
-//			// deal with hierarchy...
-//			String[] split = var.split(":");			
-//			if (split.length > 1) {
-//				var = split[split.length-1];
-//			}
-//			v.setName(var);
-//			v.setValue(GF2.constant(initial.get(vi)));
-//			gal.getVariables().add(v);
-//			vi++;
-//		}
-//		int ti = 0;
-//		for (String tname : tnames) {
-//			Transition trans = gf.createTransition();
-//			trans.setName(tname);
-//			BooleanExpression guard = gf.createTrue();
-//			SparseIntArray inputs = flowPT.getColumn(ti);
-//			for (int i = 0; i < inputs.size(); i++) {
-//				Variable place = gal.getVariables().get(inputs.keyAt(i));
-//				int val = inputs.valueAt(i);
-//				guard = GF2.and(guard, GF2.createComparison(GF2.createVariableRef(place), ComparisonOperators.GE, GF2.constant(val)));
-//			}
-//			trans.setGuard(guard);
-//			SparseIntArray outputs = flowTP.getColumn(ti);
-//			SparseIntArray flow = SparseIntArray.sumProd(-1, inputs, 1, outputs);
-//			for (int i=0 ; i < flow.size() ; i++) {
-//				Variable v = gal.getVariables().get(flow.keyAt(i));
-//				Statement ass = GF2.createIncrement(v, flow.valueAt(i));
-//				trans.getActions().add(ass);
-//			}
-//			gal.getTransitions().add(trans);
-//			ti++;
-//		}
-//		
-//		spec.getTypes().add(gal);
-//		spec.setMain(gal);
-//		return spec;
-		return null;
+	    PetriNet retour = null;
+	    try {
+	        List<SparseIntArray> col_pt = flowPT.getColumns();
+	        List<SparseIntArray> col_tp = flowTP.getColumns();
+	    
+	    
+            File xml_ptnet = File.createTempFile("tempo_net", ".pnml");
+            ArrayList<Place> places = new ArrayList<Place>();
+            PrintWriter pw = new PrintWriter(xml_ptnet);
+            pw.print("<pnml>\n" + 
+                    "<net id=\"petri_net\" type=\"P/T net\">\n");            
+            for(String pname : pnames) {
+                int i = pnames.indexOf(pname);
+                Integer marking = marks.get(i);
+                pw.print("<place id=\""+pname+"\" name=\""+pname+"\" invariant=\"&lt; inf\" initialMarking=\""+marking.intValue()+"\" />\n");
+                
+            }
+            
+            for(String transition : tnames) {
+                pw.print("<transition id=\""+transition+"\" name=\""+transition+"\" urgent=\"false\"/>\n");
+            }
+            
+            for(SparseIntArray sparseArray : col_tp) {
+                for(int i=0;i<sparseArray.size();i++) {
+                    if(sparseArray.get(i)!=0) {
+                        int index = col_tp.indexOf(sparseArray);
+                        pw.print("<inputArc source=\""+tnames.get(index)+"\" target=\""+pnames.get(i)+"\"><inscription><value>"+sparseArray.get(i)+"</value></inscription></inputArc>\n");
+                    }
+                }
+            }
+            for(SparseIntArray sparseArray : col_pt) {
+                for(int i=0;i<sparseArray.size();i++) {
+                    if(sparseArray.get(i)!=0) {
+                        int index = col_pt.indexOf(sparseArray);
+                        pw.print("<outputArc source=\""+pnames.get(i)+"\" target=\""+tnames.get(index)+"\"><inscription><value>"+sparseArray.get(i)+"</value></inscription></outputArc>\n");
+                    }
+                }
+            }
+            pw.print("</net>\n" + 
+                    "</pnml>");
+            pw.flush();
+            PTNetReader ptreader = new PTNetReader(); 
+            retour = ptreader.loadFromXML(new BufferedInputStream(new FileInputStream(xml_ptnet)));
+            
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+	    
+		return retour;
 	}
 
 }
