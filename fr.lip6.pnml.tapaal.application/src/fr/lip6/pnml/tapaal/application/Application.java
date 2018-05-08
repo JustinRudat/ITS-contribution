@@ -28,7 +28,8 @@ public class Application implements IApplication {
 		String queryff = null;
 		String exam = null;
 		
-		for (int i=0; i < args.length ; i++) {
+		// defining the arguments
+		for (int i=0; i < args.length ; i++) { 
 			if (INPUT_FILE.equals(args[i])) {
 				inputff = args[++i];
 			} else if (TAPAAL_PATH.equals(args[i])) {
@@ -48,23 +49,16 @@ public class Application implements IApplication {
 			System.err.println("Please provide input file with -i option");
 			return null;
 		}
-//		if( exam != null ) {
-//		    switch(exam) {
-//		        case "ReachabilityDeadlock" : 
-//		            File f = new File(inputff);
-//		            modelff = f.getAbsolutePath().replace("-RD.out" ,"/model.pnml");
-//		            modelff = modelff.replace("oracle","INPUTS");
-//		            break;
-//		        default : 
-//		            break;
-//		    }
-//		}
 		
+		// retrieving the installed input folder
 		File ff = new File(inputff);
+		
 		if (! ff.exists()) {
 			System.err.println("Input file "+inputff +" does not exist");
 			return null;
 		}
+		
+		
 		String pwd = ff.getParent();
 		
 		String modelName = ff.getName().replace(".pnml", "");
@@ -73,6 +67,8 @@ public class Application implements IApplication {
 		
 		System.out.println("Successfully read input file : " + inputff +" in " + (time - System.currentTimeMillis()) + " ms.");
 		
+		
+		//creating a new workfolder
 		String cwd = pwd + "/work";
 		File fcwd = new File(cwd);
 		if (! fcwd.exists()) {
@@ -80,10 +76,13 @@ public class Application implements IApplication {
 				System.err.println("Could not set up work folder in "+cwd);
 			}
 		}
+		
+		// setting the queryfile path from model path
 		queryff = inputff.replace("model.pnml", "");
 		queryff += exam +".xml";
+		
+		
 		VerifyWithProcess vwp = new VerifyWithProcess(null);
-		//vwp.doVerify(inputff, tapaalff, queryFile.getCanonicalPath());
 		vwp.doVerify(inputff, tapaalff, queryff);
 		time = System.currentTimeMillis();
 		return IApplication.EXIT_OK;
