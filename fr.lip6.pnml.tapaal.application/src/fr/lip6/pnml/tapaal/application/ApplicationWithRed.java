@@ -92,13 +92,13 @@ public class ApplicationWithRed implements IApplication {
 				spec.setMain(spec.getTypes().get(spec.getTypes().size()-1));
 			}
 			
-			// Perform reductions
+			// building StructuralReduction instance from the Specification
 			INextBuilder nb = INextBuilder.build(spec);
 			IDeterministicNextBuilder idnb = IDeterministicNextBuilder.build(nb);			
 			StructuralReduction sr = new StructuralReduction(idnb);
 			
 			try {
-			    if(doRed) { // do the reduction
+			    if(doRed) { // perform reduction
 			        sr.reduce();
     				if (sr.getTnames().isEmpty()) {
     					DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

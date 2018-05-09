@@ -49,7 +49,7 @@ public class TapaalBuilder {
             
             for(SparseIntArray sparseArray : col_tp) {
                 for(int i=0;i<sparseArray.size();i++) {
-                    if(sparseArray.get(i)!=0) {
+                    if(sparseArray.get(i)!=0) { // ou >=1
                         int index = col_tp.indexOf(sparseArray);
                         pw.print("<inputArc source=\""+tnames.get(index)+"\" target=\""+pnames.get(i)+"\"><inscription><value>"+sparseArray.get(i)+"</value></inscription></inputArc>\n");
                     }
