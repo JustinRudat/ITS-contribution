@@ -19,8 +19,8 @@ import fr.lip6.move.pnml.ptnet.impl.PetriNetImpl;
 
 public class TapaalBuilder {
 
-	public static PetriNet buildTapaal(MatrixCol flowPT, MatrixCol flowTP, List<String> pnames, List<String> tnames,
-			List<Integer> marks) {
+	public static File buildTapaal(MatrixCol flowPT, MatrixCol flowTP, List<String> pnames, List<String> tnames,
+			List<Integer> marks,String pt_name) {
 	    PetriNet retour = null;
 	    File xml_ptnet=null;
 	    try {
@@ -28,11 +28,14 @@ public class TapaalBuilder {
 	        List<SparseIntArray> col_tp = flowTP.getColumns();
 	    
 	    
-            xml_ptnet = File.createTempFile("tempo_net", ".pnml");
+            xml_ptnet = new File(pt_name+".pnml");
+            if(!xml_ptnet.exists()) {
+                xml_ptnet.createNewFile();
+            }
             ArrayList<Place> places = new ArrayList<Place>();
             PrintWriter pw = new PrintWriter(xml_ptnet);
             pw.print("<pnml>\n" + 
-                    "<net id=\"petri_net\" type=\"P/T net\">\n");            
+                    "<net id=\""+pt_name+"\" type=\"P/T net\">\n");            
             for(String pname : pnames) {
                 int i = pnames.indexOf(pname);
                 Integer marking = marks.get(i);
@@ -69,13 +72,9 @@ public class TapaalBuilder {
             
         } catch (IOException e) {
             e.printStackTrace();
-        }   finally {
-            if(null!=xml_ptnet) { // If the program run without error, delete the temporary file before exiting
-                xml_ptnet.delete();
-            }
-        }
+        }   
 	    
-		return retour;
+		return xml_ptnet;
 	}
 
 }
