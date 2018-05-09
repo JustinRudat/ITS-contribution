@@ -78,11 +78,10 @@ public class ApplicationWithRed implements IApplication {
 		}
 		String pwd = ff.getParent();
 		
-		String modelName = ff.getName().replace(".pnml", "");
-
+		File pn_file = null;
 		PetriNet pn=null;
 		String examName = ff.getName().replace("model.pnml", exam+".xml");
-		PNMLToTAPN totapn=null;
+		
 		// load PNML to Specification
 		if (ff != null && ff.exists()) {
 			System.out.println("Parsing pnml file : " + ff.getAbsolutePath());
@@ -118,7 +117,7 @@ public class ApplicationWithRed implements IApplication {
     				Specification reduced = sr.rebuildSpecification();
 			    }
 				// export to PetriNet for Tapaal
-				pn =  TapaalBuilder.buildTapaal(sr.getFlowPT(), sr.getFlowTP(), sr.getPnames(), sr.getTnames(),sr.getMarks());
+				pn_file =  TapaalBuilder.buildTapaal(sr.getFlowPT(), sr.getFlowTP(), sr.getPnames(), sr.getTnames(),sr.getMarks(),pwd);
 				
 				
 			} catch (NoDeadlockExists e) {
@@ -157,12 +156,12 @@ public class ApplicationWithRed implements IApplication {
 		// invoke Tapaal
 		VerifyWithProcess vwp = new VerifyWithProcess(null);
 		if(pn!=null){
-		    vwp.doVerify(pn, tapaalff, queryff); //appel à toTapn() in the doVerify method
+		    vwp.doVerify(pn_file.getAbsolutePath(), tapaalff, queryff); //appel à toTapn() in the doVerify method
 		}else{
 			System.err.println("Parameter PetriNet is currently null\n");
 		}
 		time = System.currentTimeMillis();
-		
+		//TODO ajouter pn_file delete
 		return IApplication.EXIT_OK;
 	}
 
