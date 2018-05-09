@@ -75,7 +75,8 @@ public class ApplicationWithRed implements IApplication {
 			return null;
 		}
 		String pwd = ff.getParent();
-		
+		String[] tmp = pwd.split("/");      //
+        String real_name = tmp[tmp.length-1]; 
 		File pn_file = null;
 		PetriNet pn=null;
 		String examName = ff.getName().replace("model.pnml", exam+".xml");
@@ -120,7 +121,7 @@ public class ApplicationWithRed implements IApplication {
     				sr = new StructuralReduction(idnb_tmp);
 			    }
 				// export to PetriNet for Tapaal
-				pn_file =  TapaalBuilder.buildTapaal(sr.getFlowPT(), sr.getFlowTP(), sr.getPnames(), sr.getTnames(),sr.getMarks(),pwd);
+				pn_file =  TapaalBuilder.buildTapaal(sr.getFlowPT(), sr.getFlowTP(), sr.getPnames(), sr.getTnames(),sr.getMarks(),real_name);
 				
 				
 			} catch (NoDeadlockExists e) {
