@@ -13,6 +13,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import fr.lip6.move.gal.Specification;
+import fr.lip6.move.gal.instantiate.GALRewriter;
 import fr.lip6.move.gal.pnml.togal.PnmlToGalTransformer;
 import fr.lip6.move.gal.semantics.IDeterministicNextBuilder;
 import fr.lip6.move.gal.semantics.INextBuilder;
@@ -43,6 +44,7 @@ public class GalTapaalTransformer implements PNMLToTapaalTransformer {
 		if (spec.getMain() == null) {
 			spec.setMain(spec.getTypes().get(spec.getTypes().size()-1));
 		}
+		GALRewriter.flatten(spec, true);
 
 		// building StructuralReduction instance from the Specification
 		INextBuilder nb = INextBuilder.build(spec);
