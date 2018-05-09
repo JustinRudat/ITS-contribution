@@ -93,7 +93,7 @@ public class VerifyWithProcess {
         try {// Creating a temporary file for the verifypn64 program
             /// temporary file is a .xml version of the .pnml chosen, for tapaal engine 
 
-            file_tmp = File.createTempFile(net.getName().getText().replace(".pnml",""), ".xml");
+            file_tmp = File.createTempFile(net.getName().getText(), ".xml");
             String file_model = file_tmp.getAbsolutePath();
 
             // Exporting the file path_pnml to file_model using our Parser/Writer PNMLToTAPN for tapaal
