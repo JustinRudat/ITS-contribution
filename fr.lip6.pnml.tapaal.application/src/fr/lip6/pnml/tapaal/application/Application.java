@@ -65,9 +65,6 @@ public class Application implements IApplication {
 		
 		long time = System.currentTimeMillis();
 		
-		System.out.println("Successfully read input file : " + inputff +" in " + (time - System.currentTimeMillis()) + " ms.");
-		
-		
 		//creating a new workfolder
 		String cwd = pwd + "/work";
 		File fcwd = new File(cwd);
@@ -76,15 +73,24 @@ public class Application implements IApplication {
 				System.err.println("Could not set up work folder in "+cwd);
 			}
 		}
-		
+
+		BasicTapaalTransformer btt = new BasicTapaalTransformer();
+		btt.setWorkFolder(fcwd.getCanonicalPath());
+
 		// setting the queryfile path from model path
 		queryff = inputff.replace("model.pnml", "");
 		queryff += exam +".xml";
-		
-		
-		VerifyWithProcess vwp = new VerifyWithProcess(null);
-		vwp.doVerify(inputff, tapaalff, queryff);
+				
+		btt.loadTransformPNML(inputff, queryff);
+
+		System.out.println("Successfully read and converted input file : " + inputff +" to folder "+cwd+" in " + (System.currentTimeMillis()-time) + " ms.");
 		time = System.currentTimeMillis();
+		
+		VerifyWithProcess vwp = new VerifyWithProcess(tapaalff);
+		vwp.doVerify(btt.getPathToTapaalNet(),btt.getPathToTapaalQuery(), null);
+		
+		System.out.println("Successfully verified : " + inputff +" in " + (System.currentTimeMillis()-time) + " ms.");
+		
 		return IApplication.EXIT_OK;
 	}
 
