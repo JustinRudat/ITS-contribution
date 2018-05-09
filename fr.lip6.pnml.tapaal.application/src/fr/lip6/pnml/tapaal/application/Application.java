@@ -13,6 +13,8 @@ public class Application implements IApplication {
 	private static final String TAPAAL_PATH = "-tapaalpath";
 	private static final String ORDER_PATH = "-order";
 	private static final String EXAMINATION = "-examination";
+	private static final String REDUCTION= "-red";
+	private static final String RAWMODE= "-raw";
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.equinox.app.IApplication#start(org.eclipse.equinox.app.IApplicationContext)
@@ -28,6 +30,12 @@ public class Application implements IApplication {
 		String queryff = null;
 		String exam = null;
 		
+		// do we do Structural Reduction
+		boolean doRed = false;
+		// do we use Raw transformation or via Specification
+		boolean doRaw = false;
+		
+		
 		// defining the arguments
 		for (int i=0; i < args.length ; i++) { 
 			if (INPUT_FILE.equals(args[i])) {
@@ -40,7 +48,11 @@ public class Application implements IApplication {
 				exam = args[++i];
 			} else if (QUERY_FILE.equals(args[i])) {
                 queryff = args[++i];
-            } else {
+			} else if(REDUCTION.equals(args[i])){
+				doRed = true;
+			} else if(RAWMODE.equals(args[i])){
+				doRaw = true;
+			} else {
 				System.err.println("Unrecognized argument :" + args[i]);
 			}
 		}
@@ -74,22 +86,35 @@ public class Application implements IApplication {
 			}
 		}
 
-		BasicTapaalTransformer btt = new BasicTapaalTransformer();
-		btt.setWorkFolder(fcwd.getCanonicalPath());
+		PNMLToTapaalTransformer btt ;
+		if (doRaw) {
+			btt = new BasicTapaalTransformer();
+			if (doRed) {
+				System.err.println("Warning : Raw mode is incompatible with -red Structural reductions flag.");
+			}
+		} else {
+			btt = new GalTapaalTransformer(doRed);
+		}
 
+		btt.setWorkFolder(fcwd.getCanonicalPath());
 		// setting the queryfile path from model path
 		queryff = inputff.replace("model.pnml", "");
 		queryff += exam +".xml";
 				
-		btt.loadTransformPNML(inputff, queryff);
+		if (! btt.loadTransformPNML(inputff, queryff)) {
+			System.out.println("Successfully read and converted input file : " + inputff +" to folder "+cwd+" in " + (System.currentTimeMillis()-time) + " ms.");
+			time = System.currentTimeMillis();
+			
+			VerifyWithProcess vwp = new VerifyWithProcess(tapaalff);
+			vwp.doVerify(btt.getPathToTapaalNet(),btt.getPathToTapaalQuery(), null);
+			
+			System.out.println("Successfully verified : " + inputff +" in " + (System.currentTimeMillis()-time) + " ms.");
+			
+		} else {
+			System.out.println("Successfully read and converted input file : " + inputff +" to folder "+cwd+" in " + (System.currentTimeMillis()-time) + " ms.");
+			System.out.println("Problem fully solved using structural reductions.");
+		}
 
-		System.out.println("Successfully read and converted input file : " + inputff +" to folder "+cwd+" in " + (System.currentTimeMillis()-time) + " ms.");
-		time = System.currentTimeMillis();
-		
-		VerifyWithProcess vwp = new VerifyWithProcess(tapaalff);
-		vwp.doVerify(btt.getPathToTapaalNet(),btt.getPathToTapaalQuery(), null);
-		
-		System.out.println("Successfully verified : " + inputff +" in " + (System.currentTimeMillis()-time) + " ms.");
 		
 		return IApplication.EXIT_OK;
 	}
