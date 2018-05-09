@@ -161,7 +161,7 @@ public class ApplicationWithRed implements IApplication {
 		VerifyWithProcess vwp = new VerifyWithProcess(null);
 		if(pn!=null){
 		    System.out.println(pn_file.getPath());
-		    vwp.doVerify(pn_file.getAbsolutePath(), tapaalff, queryff); //appel à toTapn() in the doVerify method
+		  //  vwp.doVerify(pn_file.getAbsolutePath(), tapaalff, queryff); //appel à toTapn() in the doVerify method
 		}else{
 			System.err.println("Parameter PetriNet is currently null\n");
 		}
