@@ -15,12 +15,13 @@ public class BasicTapaalTransformer implements PNMLToTapaalTransformer {
 	}
 
 	@Override
-	public void loadTransformPNML(String modelPath, String formulaPath)  throws IOException {
+	public boolean loadTransformPNML(String modelPath, String formulaPath)  throws IOException {
         // Exporting the file path_pnml to file_model using our Parser/Writer PNMLToTAPN for tapaal		
         PNMLToTAPN exporter = new PNMLToTAPN(modelPath,cwd+"/model.pnml",null);       
         exporter.toTAPN();
         // Queries are not translated in this version !
         this.formulaPath = formulaPath;
+        return false;
 	}
 
 
