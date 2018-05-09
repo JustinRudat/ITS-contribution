@@ -9,7 +9,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -19,7 +18,6 @@ import fr.lip6.move.gal.semantics.IDeterministicNextBuilder;
 import fr.lip6.move.gal.semantics.INextBuilder;
 import fr.lip6.move.gal.structural.NoDeadlockExists;
 import fr.lip6.move.gal.structural.StructuralReduction;
-import fr.pnml.tapaal.runner.PNMLToTAPN;
 import fr.pnml.tapaal.runner.VerifyWithProcess;
 import fr.lip6.move.pnml.ptnet.PetriNet;
 
@@ -86,8 +84,8 @@ public class ApplicationWithRed implements IApplication {
 		if (ff != null && ff.exists()) {
 			System.out.println("Parsing pnml file : " + ff.getAbsolutePath());
 
-			PnmlToGalTransformer trans = new PnmlToGalTransformer();
-			Specification spec = trans.transform(ff.toURI());	
+			PnmlToGalTransformer trans = new PnmlToGalTransformer();   // creation of a gal transformer setting up the Specification 
+			Specification spec = trans.transform(ff.toURI());	       // we will built a StructuralReduction out of.
 			
 			if (spec.getMain() == null) {
 				spec.setMain(spec.getTypes().get(spec.getTypes().size()-1));
@@ -115,6 +113,11 @@ public class ApplicationWithRed implements IApplication {
     					return null;
     				}
     				Specification reduced = sr.rebuildSpecification();
+    				
+    				//re-building sr from the reduced Specification
+    				INextBuilder nb_tmp = INextBuilder.build(reduced);
+    				IDeterministicNextBuilder idnb_tmp = IDeterministicNextBuilder.build(nb_tmp);
+    				sr = new StructuralReduction(idnb_tmp);
 			    }
 				// export to PetriNet for Tapaal
 				pn_file =  TapaalBuilder.buildTapaal(sr.getFlowPT(), sr.getFlowTP(), sr.getPnames(), sr.getTnames(),sr.getMarks(),pwd);
@@ -156,6 +159,7 @@ public class ApplicationWithRed implements IApplication {
 		// invoke Tapaal
 		VerifyWithProcess vwp = new VerifyWithProcess(null);
 		if(pn!=null){
+		    System.out.println(pn_file.getPath());
 		    vwp.doVerify(pn_file.getAbsolutePath(), tapaalff, queryff); //appel à toTapn() in the doVerify method
 		}else{
 			System.err.println("Parameter PetriNet is currently null\n");
