@@ -30,7 +30,7 @@ public class VerifyWithProcess {
             // Exporting the file path_pnml to file_model using our Parser/Writer PNMLToTAPN for tapaal
 
             // defining query file path and options            
-            String options = "-k 0 -s BestFS -r 1 -q 0 -ctl czero -x 1";
+            String options = "-k 0 -s BestFS -r 1 -q 0 -ctl czero -x 1 -n";
             String arguments = options+" "+file_model+" "+file_query;
             String commandLine = verifypath+" "+arguments;
 
