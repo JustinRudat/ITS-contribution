@@ -57,7 +57,7 @@ public class VerifyWithProcess {
             long usedMB = (rt.totalMemory() - rt.freeMemory()) / 1024 / 1024;
             String str_tmp ="Memory usage : "+usedMB+"Mb";
             System.out.println(str_tmp);            
-            printACSV(usedMB,System.currentTimeMillis()- timestamp, new File(file_model).getParent());
+            //printACSV(usedMB,System.currentTimeMillis()- timestamp, new File(file_model).getParent());
         } catch (IOException | TimeoutException | InterruptedException e) {
             e.printStackTrace();
         }
